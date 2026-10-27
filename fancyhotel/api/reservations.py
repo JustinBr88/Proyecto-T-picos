@@ -56,6 +56,11 @@ class CreateReservationResource(Resource):
         if not isinstance(selected_rooms, list) or not selected_rooms:
             return {"message": {"rooms": "Please provide a list of rooms"}}, 400
 
+        for room in selected_rooms:
+            if not rooms.is_room_free(room["room_number"], room["location"], args["checkIn"], args["checkOut"]):
+                return {"id": -1, "result": False,
+                        "message": "Some rooms are no longer available for the selected dates"}, 400
+
         total_cost = 0
         for room in selected_rooms:
             total_cost += room["cost"]

@@ -18,6 +18,7 @@ def register_routes(api):
 
     # Habitaciones
     api.add_resource(rooms.SearchRoomsResource, "/api/searchRoom")
+    api.add_resource(rooms.AvailabilityResource, "/api/availability")
 
     # Reservas
     api.add_resource(reservations.CreateReservationResource, "/api/reservation/create")
