@@ -105,7 +105,7 @@ Los criterios de aceptación usan el formato *Dado / Cuando / Entonces*. Cada cr
 - **CA2.1** (BUG-1) Dada una reserva del día 10 al 15, cuando se busca del 12 al 20, entonces esa habitación **no** aparece como libre. Se cubre el solapamiento en ambos extremos, la contención total y el rango que envuelve a la reserva.
 - **CA2.2** Check-out y check-in el mismo día no se consideran solapamiento (la noche del check-out queda libre).
 - **CA2.3** Las reservas canceladas no ocupan días.
-- **CA2.4** Existe `GET /api/availability?location=&month=YYYY-MM` que devuelve el estado de cada día del mes: `libre` (todas las habitaciones disponibles), `parcial` (algunas) o `lleno` (ninguna).
+- **CA2.4** Existe `GET /api/availability?location=&month=YYYY-MM` que devuelve el estado de cada día del mes: `lleno` (ninguna habitación libre), `parcial` (quedan pocas: **30 % o menos** libres) o `libre` (el resto), junto con la cantidad de habitaciones libres. *Cambio respecto de la versión inicial ("parcial" = alguna ocupada): ver AI_LOG, decisión humana #8.*
 - **CA2.5** Dado que el cliente elige una locación, cuando abre el selector de fechas, entonces los días `lleno` aparecen deshabilitados (opción `disabledDates` de bootstrap-datetimepicker) y los `parcial` se distinguen visualmente (la librería no lo trae: hay que marcarlos con CSS sobre el widget, por ejemplo en el evento `dp.update`).
 - **CA2.6** Las fechas pasadas no se pueden seleccionar.
 - **CA2.7** Al cambiar de mes o de locación, el calendario se actualiza sin recargar la página.
