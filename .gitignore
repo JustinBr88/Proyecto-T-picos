@@ -12,3 +12,6 @@ __pycache__/
 .idea/
 Thumbs.db
 .DS_Store
+
+# Grafo de graphify (se regenera con /graphify; contiene rutas locales)
+graphify-out/
