@@ -43,7 +43,7 @@ Cada fase tiene un **criterio de salida**: no se pasa a la siguiente hasta cumpl
 |---|---|---|
 | 1.1 | Importar el código base al repo (commit inicial intacto, para tener la referencia del "antes") | Justin |
 | 1.2 | Migrar a Python 3: `print`, imports relativos (`import api`, `from db...`), dependencias actuales | Justin |
-| 1.3 | Configuración por `.env` (`python-dotenv`) + `.env.example`; quitar `root/password` y la conexión a `sys` | Ana |
+| 1.3 | Configuración por variables de entorno (`python-dotenv`); quitar `root/password` y la conexión a `sys` | Ana |
 | 1.4 | Script de seed: managers, clientes, habitaciones en ≥2 locaciones, histórico de 12–18 meses | Bethel |
 | 1.5 | pytest + fixture de base `Fancy_Hotel_test` + test de humo | Ana |
 | 1.6 | Corregir BUG-3 (`FROM customer`) y decidir BUG-2 (endpoint roto) | Justin |
@@ -128,8 +128,8 @@ Mismo ciclo que la Fase 2. El Caso 5 puede arrancar antes, durante la Fase 2, si
 
 | Decisión | Opción A | Opción B | Recomendación |
 |---|---|---|---|
-| MySQL para desarrollo | Instalación local en cada PC | Docker Compose con MySQL 8 | **B** si los tres tienen Docker: mismo entorno para todos y base de tests desechable. A si no, es más simple de entender. |
+| MySQL para desarrollo | Instalación local en cada PC | Docker Compose con MySQL 8 | **B, ya implementada en el Caso 0** (`docker-compose.yml`). Confirmar que Ana y Bethel tienen Docker; si no, sirve un MySQL local con el mismo usuario y contraseña (ver README). |
 | Herramienta de gráficos (Caso 3) | Chart.js por CDN | Generar las imágenes en el backend | **A**: encaja con el front actual y no agrega dependencias de Python. |
 | Método de previsión (Caso 3) | Media móvil | Regresión lineal + estacionalidad | Arrancar con **A**, pasar a B si hay tiempo. Lo importante es poder explicarlo en la presentación. |
-| BUG-2 (`ReservationResource.put`) | Corregirlo | Eliminarlo si el front no lo usa | Verificar en `controllers.js` primero. |
+| Mantener flask-restful | Mantenerlo (sin mantenimiento desde 2023, pero funciona con el ajuste de `location`) | Migrar a `MethodView` de Flask | **A** durante el proyecto: cambiarlo tocaría todos los endpoints sin aportar a ninguna historia. |
 | Fechas de cada fase | — | — | Pendiente: definir según la fecha de entrega. |

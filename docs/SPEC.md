@@ -14,7 +14,7 @@
 | Aspecto | Realidad del código | Impacto |
 |---|---|---|
 | Backend | Python **2** + Flask + flask_restful (`fancyhotel/serve.py`, `api.py`) | No corre en Python 3 (`print x`). Hay que migrar. |
-| Frontend | **AngularJS 1.4** + Bootstrap 3 + bootstrap-datepicker (`static/js/controllers.js`) | No es "JS sin framework" como dice la tabla del enunciado. |
+| Frontend | **AngularJS 1.4** + Bootstrap 3 + **Eonasdan bootstrap-datetimepicker** (el archivo se llama `bootstrap-datepicker.js`, pero es otra librería) | No es "JS sin framework" como dice la tabla del enunciado. |
 | Base de datos | MySQL; el esquema se crea en `MysqlManager.init_db()` | Credenciales `root/password` hardcodeadas. |
 | Datos | No hay seed (`#fill db with existing data here` vacío) | Sin habitaciones la búsqueda nunca devuelve resultados. |
 | Tests | Ninguno | Hay que montar pytest desde cero. |
@@ -23,11 +23,15 @@
 
 ### Bugs conocidos detectados al leer el código
 
-| ID | Ubicación | Descripción |
-|---|---|---|
-| BUG-1 | `db/mysqldb.py` → `search_rooms`, `is_room_free` | La condición de ocupado (`checkin >= X AND checkout <= Y`) sólo detecta reservas **contenidas** en el rango buscado; no detecta solapamientos parciales → doble reserva. Lo resuelve el Caso 2. |
-| BUG-2 | `api.py` → `ReservationResource.put` | Usa `deltaDays` sin definirlo (`NameError`) y `total_cost + ...` sin asignar. Evaluar si el endpoint se usa; si no, eliminarlo. |
-| BUG-3 | `db/mysqldb.py` → `user_exists` | Consulta `FROM customer` en minúscula; en MySQL sobre Linux los nombres de tabla distinguen mayúsculas. |
+Las rutas indicadas son las de la app original; entre paréntesis, dónde quedó el código después del Caso 0.
+
+| ID | Ubicación | Descripción | Estado |
+|---|---|---|---|
+| BUG-1 | `db/mysqldb.py` → `search_rooms`, `is_room_free` (hoy `fancyhotel/db/rooms.py`) | La condición de ocupado (`checkin >= X AND checkout <= Y`) sólo detecta reservas **contenidas** en el rango buscado; no detecta solapamientos parciales → doble reserva. | Pendiente: Caso 2 |
+| BUG-2 | `api.py` → `ReservationResource.put` (hoy `fancyhotel/api/reservations.py`) | Usa `deltaDays` sin definirlo (`NameError`) y llama a `update_reservation` con argumentos equivocados. **Es el endpoint que usa el frontend** para modificar fechas, así que el flujo "Actualizar reserva" estaba roto. | Resuelto en Caso 0 |
+| BUG-3 | `db/mysqldb.py` → `user_exists` (hoy `fancyhotel/db/users.py`) | Consulta `FROM customer` en minúscula; en MySQL sobre Linux (Docker) los nombres de tabla distinguen mayúsculas. | Resuelto en Caso 0 |
+| BUG-4 | Todos los recursos con `reqparse` | Con Flask 3, flask-restful responde **415** a los GET porque intenta leer un cuerpo JSON; y `type=list` convierte cada habitación (un dict) en la lista de sus claves. | Resuelto en Caso 0 |
+| BUG-5 | `db/mysqldb.py` → `cancel_reservation` | Mezcla de tab y espacio en la indentación: `TabError` en Python 3. | Resuelto en Caso 0 |
 
 ---
 
@@ -66,7 +70,7 @@ Los criterios de aceptación usan el formato *Dado / Cuando / Entonces*. Cada cr
 
 **Criterios de aceptación**
 - **CA0.1** Dado un clon limpio, cuando se siguen los pasos del README, entonces la app arranca en `localhost:5000` con Python 3.12.
-- **CA0.2** Las credenciales de MySQL se leen de variables de entorno (`.env`, con `.env.example` versionado); ninguna credencial queda en el código.
+- **CA0.2** La conexión a MySQL se configura con variables de entorno (archivo `.env` opcional, fuera del repo). Los únicos valores en el código son los por defecto del contenedor local de desarrollo.
 - **CA0.3** Existe un script de seed que crea: managers, clientes, habitaciones en al menos 2 locaciones y **un histórico de reservas de 12–18 meses** (lo necesita el Caso 3).
 - **CA0.4** `pytest` corre y pasa con al menos un test de humo (la app levanta y `/api/searchRoom` responde).
 - **CA0.5** Los tests usan una base separada (`Fancy_Hotel_test`) y nunca tocan la de desarrollo.
@@ -101,7 +105,7 @@ Los criterios de aceptación usan el formato *Dado / Cuando / Entonces*. Cada cr
 - **CA2.2** Check-out y check-in el mismo día no se consideran solapamiento (la noche del check-out queda libre).
 - **CA2.3** Las reservas canceladas no ocupan días.
 - **CA2.4** Existe `GET /api/availability?location=&month=YYYY-MM` que devuelve el estado de cada día del mes: `libre` (todas las habitaciones disponibles), `parcial` (algunas) o `lleno` (ninguna).
-- **CA2.5** Dado que el cliente elige una locación, cuando abre el selector de fechas, entonces los días `lleno` aparecen deshabilitados y los `parcial` se distinguen visualmente (usando `beforeShowDay` de bootstrap-datepicker).
+- **CA2.5** Dado que el cliente elige una locación, cuando abre el selector de fechas, entonces los días `lleno` aparecen deshabilitados (opción `disabledDates` de bootstrap-datetimepicker) y los `parcial` se distinguen visualmente (la librería no lo trae: hay que marcarlos con CSS sobre el widget, por ejemplo en el evento `dp.update`).
 - **CA2.6** Las fechas pasadas no se pueden seleccionar.
 - **CA2.7** Al cambiar de mes o de locación, el calendario se actualiza sin recargar la página.
 
@@ -113,7 +117,7 @@ Los criterios de aceptación usan el formato *Dado / Cuando / Entonces*. Cada cr
 
 > Como administrador del sistema, quiero ver gráficos de previsión de la demanda basados en el histórico, para ajustar los precios y el inventario de forma inteligente.
 
-**Contexto en el código:** ya existen los reportes `reservation_report`, `room_report` y `revenue_report` (rutas `/api/reports/*`), accesibles para managers.
+**Contexto en el código:** ya existen los reportes `reservation_report`, `room_report` y `revenue_report` (rutas `/api/reports/*`, código en `fancyhotel/db/reports.py`). Ojo: están fijos a agosto y septiembre.
 
 **Criterios de aceptación**
 - **CA3.1** Existe `GET /api/reports/forecast?location=&type=` que devuelve una serie mensual histórica (noches reservadas u ocupación %) y una previsión de los próximos 3 meses.
