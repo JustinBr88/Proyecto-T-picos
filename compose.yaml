@@ -1,0 +1,78 @@
+# Entorno de desarrollo completo: la app Flask + MySQL.
+#
+#   docker compose up --build     Levanta todo → http://localhost:5000
+#   docker compose watch          Igual, y además copia al contenedor los cambios de código al guardar
+#   docker compose up -d mysql    Sólo MySQL (para correr la app o pytest desde el venv local)
+#   docker compose down           Detiene todo (los datos se conservan)
+#   docker compose down -v        Detiene todo y BORRA los datos de MySQL
+#
+# Los valores por defecto son los mismos que usa fancyhotel/config.py. Para
+# cambiarlos, definí las variables en un archivo .env en la raíz del proyecto.
+# Son credenciales de desarrollo local, no de un entorno real.
+services:
+  app:
+    build: .
+    container_name: fancyhotel-app
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-fancyhotel}
+      DB_PASSWORD: ${DB_PASSWORD:-fancyhotel_dev}
+      DB_NAME: ${DB_NAME:-Fancy_Hotel}
+      TEST_DB_NAME: ${TEST_DB_NAME:-Fancy_Hotel_test}
+      FLASK_DEBUG: ${FLASK_DEBUG:-1}
+    ports:
+      # Sólo localhost: el modo debug de Flask permite ejecutar código desde el navegador.
+      - "127.0.0.1:${APP_PORT:-5000}:5000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    # `docker compose watch`: sincroniza el código sin montar carpetas del host
+    # (Docker Desktop no siempre comparte discos externos en Windows).
+    develop:
+      watch:
+        - action: sync
+          path: ./fancyhotel
+          target: /app/fancyhotel
+        - action: sync
+          path: ./tests
+          target: /app/tests
+        - action: rebuild
+          path: requirements.txt
+        - action: rebuild
+          path: requirements-dev.txt
+
+  mysql:
+    image: mysql:8.4
+    container_name: fancyhotel-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_dev}
+      MYSQL_DATABASE: ${DB_NAME:-Fancy_Hotel}
+      MYSQL_USER: ${DB_USER:-fancyhotel}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-fancyhotel_dev}
+    ports:
+      # Publicado sólo en localhost para el venv local y herramientas como MySQL Workbench.
+      - "127.0.0.1:${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    configs:
+      - source: grant-test-db
+        target: /docker-entrypoint-initdb.d/01-grant-test-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  mysql-data:
+
+# Script que MySQL ejecuta una sola vez, al crear el contenedor: da permisos al
+# usuario de la app sobre la base de tests (la de desarrollo ya la crea
+# MYSQL_DATABASE). Va inline y no como carpeta montada porque Docker Desktop no
+# siempre comparte las carpetas del host (p. ej. discos externos en Windows).
+configs:
+  grant-test-db:
+    content: |
+      GRANT ALL PRIVILEGES ON `${TEST_DB_NAME:-Fancy_Hotel_test}`.* TO '${DB_USER:-fancyhotel}'@'%';
+      FLUSH PRIVILEGES;

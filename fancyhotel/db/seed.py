@@ -133,6 +133,17 @@ def build_reviews(rng, customers):
     return rows
 
 
+def is_empty():
+    """True si todavía no hay habitaciones cargadas."""
+    cursor = get_db().cursor()
+    try:
+        cursor.execute("SELECT COUNT(*) FROM Room")
+        (count,) = cursor.fetchone()
+        return count == 0
+    finally:
+        cursor.close()
+
+
 def seed_database(history_months=15, today=None):
     """Inserta los datos de prueba en una base vacía. Devuelve cuántas filas cargó por tabla."""
     today = today or date.today()

@@ -34,7 +34,7 @@ metadata:
 - Commits en inglés con [Conventional Commits](https://www.conventionalcommits.org/es/) y el issue al final: `tipo(ámbito): descripción (#N)`.
 - Commits chicos y con un solo propósito: es la evidencia de "commits identificables".
 - **Sin** líneas `Co-Authored-By` ni firmas de IA en los commits: el uso de IA se documenta en el AI Log y en el PR.
-- Antes de abrir el PR: `git pull --rebase origin develop` y `pytest` en verde.
+- Antes de abrir el PR: `git pull --rebase origin develop`, `pytest` en verde y el grafo actualizado en el último commit (`graphify update .` si sólo cambió código; `/graphify . --update` si cambió documentación). Ver README, "Grafo del proyecto".
 - `api/__init__.py`, `controllers.js` y `db/schema.py` los tocan varios casos: agregar lo nuevo **al final** de su sección para reducir conflictos. Resuelve los conflictos quien mergea segundo.
 - El **Reviewer** aprueba el código; el **QA** comenta el resultado de cada criterio. Recién ahí se mergea (*squash* o *merge*, el equipo decide uno y lo mantiene).
 

@@ -129,7 +129,7 @@ Mismo ciclo que la Fase 2. El Caso 5 puede arrancar antes, durante la Fase 2, si
 
 | Decisión | Opción A | Opción B | Recomendación |
 |---|---|---|---|
-| MySQL para desarrollo | Instalación local en cada PC | Docker Compose con MySQL 8 | **B, ya implementada en el Caso 0** (`docker-compose.yml`). Confirmar que Ana y Bethel tienen Docker; si no, sirve un MySQL local con el mismo usuario y contraseña (ver README). |
+| MySQL para desarrollo | Instalación local en cada PC | Docker Compose con MySQL 8 | **B, ya implementada en el Caso 0** (`compose.yaml`, que además levanta la app). Confirmar que Ana y Bethel tienen Docker; si no, sirve un MySQL local con el mismo usuario y contraseña (ver README). |
 | Herramienta de gráficos (Caso 3) | Chart.js por CDN | Generar las imágenes en el backend | **A**: encaja con el front actual y no agrega dependencias de Python. |
 | Método de previsión (Caso 3) | Media móvil | Regresión lineal + estacionalidad | Arrancar con **A**, pasar a B si hay tiempo. Lo importante es poder explicarlo en la presentación. |
 | Mantener flask-restful | Mantenerlo (sin mantenimiento desde 2023, pero funciona con el ajuste de `location`) | Migrar a `MethodView` de Flask | **A** durante el proyecto: cambiarlo tocaría todos los endpoints sin aportar a ninguna historia. |

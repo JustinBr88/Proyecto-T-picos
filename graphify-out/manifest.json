@@ -1,0 +1,317 @@
+{
+  "fancyhotel/__init__.py": {
+    "mtime": 1793123404.0,
+    "ast_hash": "f330f0c433bf0ef9a6825b868615ff39",
+    "semantic_hash": "f330f0c433bf0ef9a6825b868615ff39"
+  },
+  "fancyhotel/api/__init__.py": {
+    "mtime": 1793123504.0,
+    "ast_hash": "a8d709244c3e5d5defdd1c8c1b83f0f8",
+    "semantic_hash": "a8d709244c3e5d5defdd1c8c1b83f0f8"
+  },
+  "fancyhotel/api/auth.py": {
+    "mtime": 1793123504.0,
+    "ast_hash": "b65864871b1e9688e365d58d626b775d",
+    "semantic_hash": "b65864871b1e9688e365d58d626b775d"
+  },
+  "fancyhotel/api/payments.py": {
+    "mtime": 1793123506.0,
+    "ast_hash": "f10fece51cf1e8731075689f620dbda1",
+    "semantic_hash": "f10fece51cf1e8731075689f620dbda1"
+  },
+  "fancyhotel/api/reports.py": {
+    "mtime": 1793123506.0,
+    "ast_hash": "22e8eed350119e324b67d3f1ee00c522",
+    "semantic_hash": "22e8eed350119e324b67d3f1ee00c522"
+  },
+  "fancyhotel/api/reservations.py": {
+    "mtime": 1793128156.0,
+    "ast_hash": "208777b1079db87945d2be0b435704b2",
+    "semantic_hash": "208777b1079db87945d2be0b435704b2"
+  },
+  "fancyhotel/api/reviews.py": {
+    "mtime": 1793123506.0,
+    "ast_hash": "931e4aeda8f528df84658cbf2f6b1fdc",
+    "semantic_hash": "931e4aeda8f528df84658cbf2f6b1fdc"
+  },
+  "fancyhotel/api/rooms.py": {
+    "mtime": 1793123506.0,
+    "ast_hash": "768d18e3dfa2220ed73a05f4c8ea4d6a",
+    "semantic_hash": "768d18e3dfa2220ed73a05f4c8ea4d6a"
+  },
+  "fancyhotel/cli.py": {
+    "mtime": 1793129240.0,
+    "ast_hash": "4b25e60858c1db5f941940359a4dcff0",
+    "semantic_hash": "4b25e60858c1db5f941940359a4dcff0"
+  },
+  "fancyhotel/config.py": {
+    "mtime": 1793129468.0,
+    "ast_hash": "e9846225c16f6fec3c2fa5e5b8337a4d",
+    "semantic_hash": "e9846225c16f6fec3c2fa5e5b8337a4d"
+  },
+  "fancyhotel/db/__init__.py": {
+    "mtime": 1793123404.0,
+    "ast_hash": "9dcf6018a8ab3328418fd02c4c7dc994",
+    "semantic_hash": "9dcf6018a8ab3328418fd02c4c7dc994"
+  },
+  "fancyhotel/db/connection.py": {
+    "mtime": 1793123404.0,
+    "ast_hash": "3555f11c7e4cfc06d6c08a77f83bb09d",
+    "semantic_hash": "3555f11c7e4cfc06d6c08a77f83bb09d"
+  },
+  "fancyhotel/db/payments.py": {
+    "mtime": 1793123456.0,
+    "ast_hash": "e776994198185f6324fa3124be40ed7d",
+    "semantic_hash": "e776994198185f6324fa3124be40ed7d"
+  },
+  "fancyhotel/db/reports.py": {
+    "mtime": 1793123456.0,
+    "ast_hash": "9a2eb3cec90f8bcf786d3368211a0b09",
+    "semantic_hash": "9a2eb3cec90f8bcf786d3368211a0b09"
+  },
+  "fancyhotel/db/reservations.py": {
+    "mtime": 1793123456.0,
+    "ast_hash": "06cf52c060e014ad037af9212ab699d5",
+    "semantic_hash": "06cf52c060e014ad037af9212ab699d5"
+  },
+  "fancyhotel/db/reviews.py": {
+    "mtime": 1793123456.0,
+    "ast_hash": "46a751dc88f5c73b8b922ab035b826d0",
+    "semantic_hash": "46a751dc88f5c73b8b922ab035b826d0"
+  },
+  "fancyhotel/db/rooms.py": {
+    "mtime": 1793123456.0,
+    "ast_hash": "1fce00c596865c99e1603d0049ae2eab",
+    "semantic_hash": "1fce00c596865c99e1603d0049ae2eab"
+  },
+  "fancyhotel/db/schema.py": {
+    "mtime": 1793123404.0,
+    "ast_hash": "4c90818f7b931d8191cd759de0f13f44",
+    "semantic_hash": "4c90818f7b931d8191cd759de0f13f44"
+  },
+  "fancyhotel/db/seed.py": {
+    "mtime": 1793129240.0,
+    "ast_hash": "58f44270be4fd76d19d15fd82f1caedf",
+    "semantic_hash": "58f44270be4fd76d19d15fd82f1caedf"
+  },
+  "fancyhotel/db/users.py": {
+    "mtime": 1793123456.0,
+    "ast_hash": "6fc951f6ec8ceb631d4057c9e73cc2d5",
+    "semantic_hash": "6fc951f6ec8ceb631d4057c9e73cc2d5"
+  },
+  "fancyhotel/static/js/controllers.js": {
+    "mtime": 1793123058.0,
+    "ast_hash": "d2b2464ba496d32b6aa456ebf9b93822",
+    "semantic_hash": "d2b2464ba496d32b6aa456ebf9b93822"
+  },
+  "run.py": {
+    "mtime": 1793123526.0,
+    "ast_hash": "f80af93f954ffeea2389f139935d8dc9",
+    "semantic_hash": "f80af93f954ffeea2389f139935d8dc9"
+  },
+  "tests/__init__.py": {
+    "mtime": 1793123724.0,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "tests/conftest.py": {
+    "mtime": 1793129468.0,
+    "ast_hash": "093c56478a108b5ca213d1346bbd2fd6",
+    "semantic_hash": "093c56478a108b5ca213d1346bbd2fd6"
+  },
+  "tests/integration/__init__.py": {
+    "mtime": 1793123724.0,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "tests/integration/test_auth.py": {
+    "mtime": 1793123724.0,
+    "ast_hash": "2f32214910b20016b55f893577ada1fd",
+    "semantic_hash": "2f32214910b20016b55f893577ada1fd"
+  },
+  "tests/integration/test_payments.py": {
+    "mtime": 1793123724.0,
+    "ast_hash": "6f83afc9629e855ccd4f2733096e9a1b",
+    "semantic_hash": "6f83afc9629e855ccd4f2733096e9a1b"
+  },
+  "tests/integration/test_reservations.py": {
+    "mtime": 1793128156.0,
+    "ast_hash": "fda1e7c0cbb558091457fd1fe8ce2473",
+    "semantic_hash": "fda1e7c0cbb558091457fd1fe8ce2473"
+  },
+  "tests/integration/test_reviews_and_reports.py": {
+    "mtime": 1793123724.0,
+    "ast_hash": "4906699ad86a220d1bd9572088957354",
+    "semantic_hash": "4906699ad86a220d1bd9572088957354"
+  },
+  "tests/integration/test_smoke.py": {
+    "mtime": 1793123724.0,
+    "ast_hash": "1ff27482a678ede4073dfc28257a82a9",
+    "semantic_hash": "1ff27482a678ede4073dfc28257a82a9"
+  },
+  "tests/support.py": {
+    "mtime": 1793123724.0,
+    "ast_hash": "2bbedc32fc3e9b950d938d1ba8dc5185",
+    "semantic_hash": "2bbedc32fc3e9b950d938d1ba8dc5185"
+  },
+  "tests/unit/__init__.py": {
+    "mtime": 1793123724.0,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "tests/unit/test_reservation_helpers.py": {
+    "mtime": 1793123710.0,
+    "ast_hash": "74495d20747667d4097d8fe37cdab49b",
+    "semantic_hash": "74495d20747667d4097d8fe37cdab49b"
+  },
+  "tests/unit/test_seed.py": {
+    "mtime": 1793123710.0,
+    "ast_hash": "584be768d6fb3eebe746d1d9de5a2e2e",
+    "semantic_hash": "584be768d6fb3eebe746d1d9de5a2e2e"
+  },
+  "README.md": {
+    "mtime": 1793130204.0,
+    "ast_hash": "5271b277bb5b1c259645e9462f519136",
+    "semantic_hash": "5271b277bb5b1c259645e9462f519136"
+  },
+  "docs/AI_LOG.md": {
+    "mtime": 1793130226.0,
+    "ast_hash": "549dc0410444d2aa391e5161b436a814",
+    "semantic_hash": "549dc0410444d2aa391e5161b436a814"
+  },
+  "docs/FASES.md": {
+    "mtime": 1793129468.0,
+    "ast_hash": "fb8ab903098584ec2f2340ed4fae8fca",
+    "semantic_hash": "fb8ab903098584ec2f2340ed4fae8fca"
+  },
+  "docs/SPEC.md": {
+    "mtime": 1793128450.0,
+    "ast_hash": "4c54aa54b36261b0ef296a502af61803",
+    "semantic_hash": "4c54aa54b36261b0ef296a502af61803"
+  },
+  "fancyhotel/static/views/cancelReservation.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "13d549f5fce1dd6c75da180264213764",
+    "semantic_hash": "13d549f5fce1dd6c75da180264213764"
+  },
+  "fancyhotel/static/views/login.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "4fdbac163e06f41b9f0d4d794ec495bc",
+    "semantic_hash": "4fdbac163e06f41b9f0d4d794ec495bc"
+  },
+  "fancyhotel/static/views/payment.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "c6e5cfbbfbefaf53b9dd828b8e2fd800",
+    "semantic_hash": "c6e5cfbbfbefaf53b9dd828b8e2fd800"
+  },
+  "fancyhotel/static/views/popularRoomCatReport.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "18f5c4ac55b7f43043031d4eda4aa920",
+    "semantic_hash": "18f5c4ac55b7f43043031d4eda4aa920"
+  },
+  "fancyhotel/static/views/registerUser.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "06f8d438687e5114ad66ec149ac1b74e",
+    "semantic_hash": "06f8d438687e5114ad66ec149ac1b74e"
+  },
+  "fancyhotel/static/views/reservationReport.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "ada643231d8ecd821931aebd65643231",
+    "semantic_hash": "ada643231d8ecd821931aebd65643231"
+  },
+  "fancyhotel/static/views/revenueReport.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "fb1302209f34a938a7cb89888c997b40",
+    "semantic_hash": "fb1302209f34a938a7cb89888c997b40"
+  },
+  "fancyhotel/static/views/searchRoom.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "d2a99de7a3d1628cb646ece571504e3d",
+    "semantic_hash": "d2a99de7a3d1628cb646ece571504e3d"
+  },
+  "fancyhotel/static/views/selectionPage.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "b7c0fdf6c68f4c870dab81d36a13eee1",
+    "semantic_hash": "b7c0fdf6c68f4c870dab81d36a13eee1"
+  },
+  "fancyhotel/static/views/updateReservation.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "fa12bb6dd47316837cdc631c86314843",
+    "semantic_hash": "fa12bb6dd47316837cdc631c86314843"
+  },
+  "fancyhotel/static/views/viewFeedback.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "3a0dea83e6ea889b53aa19a45f3bd9d4",
+    "semantic_hash": "3a0dea83e6ea889b53aa19a45f3bd9d4"
+  },
+  "fancyhotel/static/views/welcome.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "f6b4271fc92b635fd9787203d7e1aee5",
+    "semantic_hash": "f6b4271fc92b635fd9787203d7e1aee5"
+  },
+  "fancyhotel/static/views/writeReview.html": {
+    "mtime": 1793123058.0,
+    "ast_hash": "c1f57d671d453fef7ce71540664d350b",
+    "semantic_hash": "c1f57d671d453fef7ce71540664d350b"
+  },
+  "fancyhotel/templates/index.html": {
+    "mtime": 1793123060.0,
+    "ast_hash": "d6febe99e5c927468287a6e174ddca19",
+    "semantic_hash": "d6febe99e5c927468287a6e174ddca19"
+  },
+  "requirements-dev.txt": {
+    "mtime": 1793123640.0,
+    "ast_hash": "734583b99d685a83e9cbdcb3e13a276a",
+    "semantic_hash": "734583b99d685a83e9cbdcb3e13a276a"
+  },
+  "requirements.txt": {
+    "mtime": 1793123640.0,
+    "ast_hash": "24b19b6efe1dd32367175c2abe57499a",
+    "semantic_hash": "24b19b6efe1dd32367175c2abe57499a"
+  },
+  "tests/integration/test_cli.py": {
+    "mtime": 1793129226.0,
+    "ast_hash": "e9f555f36d50b8d67c955a6914f63b26",
+    "semantic_hash": "e9f555f36d50b8d67c955a6914f63b26"
+  },
+  ".claude/skills/fancyhotel-backend/SKILL.md": {
+    "mtime": 1793124154.0,
+    "ast_hash": "62b5182a51c4bd5acf0b8d1ca78c392a",
+    "semantic_hash": "62b5182a51c4bd5acf0b8d1ca78c392a"
+  },
+  ".claude/skills/fancyhotel-docs/SKILL.md": {
+    "mtime": 1793124154.0,
+    "ast_hash": "69bb6a71b83086098f5002af361dc522",
+    "semantic_hash": "69bb6a71b83086098f5002af361dc522"
+  },
+  ".claude/skills/fancyhotel-frontend/SKILL.md": {
+    "mtime": 1793124154.0,
+    "ast_hash": "9aac421c305f86162b6a93140ad6e001",
+    "semantic_hash": "9aac421c305f86162b6a93140ad6e001"
+  },
+  ".claude/skills/fancyhotel-git/SKILL.md": {
+    "mtime": 1793130204.0,
+    "ast_hash": "ddbf15b34c99c6215df7f0544c96ea9f",
+    "semantic_hash": "ddbf15b34c99c6215df7f0544c96ea9f"
+  },
+  ".claude/skills/fancyhotel-testing/SKILL.md": {
+    "mtime": 1793129468.0,
+    "ast_hash": "cf4b9d6b31ce2cac22bfca54c7f9baff",
+    "semantic_hash": "cf4b9d6b31ce2cac22bfca54c7f9baff"
+  },
+  "AGENTS.md": {
+    "mtime": 1793130204.0,
+    "ast_hash": "41f8630869a9c686fa00aacd7adeffae",
+    "semantic_hash": "41f8630869a9c686fa00aacd7adeffae"
+  },
+  "CLAUDE.md": {
+    "mtime": 1793124236.0,
+    "ast_hash": "e4862911f05cbb136989817622b859fe",
+    "semantic_hash": "e4862911f05cbb136989817622b859fe"
+  },
+  "compose.yaml": {
+    "mtime": 1793129274.0,
+    "ast_hash": "c061382bb23de88671b45a52702f4485",
+    "semantic_hash": "c061382bb23de88671b45a52702f4485"
+  }
+}

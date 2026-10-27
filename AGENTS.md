@@ -15,6 +15,7 @@ Proyecto universitario: Feature Sprint con IA sobre un sistema de reservas exist
 5. Si tu propuesta fue corregida o rechazada por una persona, o te equivocaste, recordale que lo anote en [docs/AI_LOG.md](docs/AI_LOG.md).
 6. Commits en inglés con Conventional Commits y el número de issue, **sin** líneas `Co-Authored-By` ni firmas de IA.
 7. Nunca subas secretos ni archivos `.env`.
+8. Para orientarte en el código, consultá primero el grafo (`graphify query "<pregunta>"`, datos en `graphify-out/`) y después leé los archivos. Al terminar un cambio, actualizalo (ver README, "Grafo del proyecto").
 
 ## Skills del proyecto
 
@@ -39,8 +40,13 @@ Están en `.claude/skills/`. Cargá la que corresponda **antes** de escribir có
 ## Comandos
 
 ```bash
-docker compose up -d                 # MySQL
-flask --app fancyhotel seed-db       # base con datos de prueba
-python run.py                        # http://localhost:5000
-pytest                               # tests
+# Todo en Docker
+docker compose up --build                  # app + MySQL → http://localhost:5000
+docker compose exec app pytest             # tests dentro del contenedor
+
+# App en el venv local
+docker compose up -d mysql                 # sólo MySQL
+flask --app fancyhotel seed-db             # base con datos de prueba
+python run.py                              # http://localhost:5000
+pytest                                     # tests
 ```
