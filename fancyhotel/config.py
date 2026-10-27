@@ -1,7 +1,7 @@
 """Configuración de la aplicación, leída de variables de entorno.
 
 Las variables se pueden definir en un archivo .env en la raíz (nunca se sube al
-repositorio). Los valores por defecto coinciden con los de docker-compose.yml,
+repositorio). Los valores por defecto coinciden con los de compose.yaml,
 así que para desarrollo local con Docker no hace falta crear el .env.
 Son credenciales de un contenedor local, no de ningún entorno real.
 """

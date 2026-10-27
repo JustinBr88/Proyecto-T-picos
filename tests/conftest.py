@@ -31,7 +31,7 @@ def app():
         # Sólo se saltean si MySQL no responde; cualquier otro error (permisos,
         # credenciales) tiene que verse como fallo, no esconderse como "skipped".
         if error.errno in MYSQL_UNREACHABLE_ERRORS:
-            pytest.skip(f"MySQL no disponible ({error}). Levantalo con: docker compose up -d")
+            pytest.skip(f"MySQL no disponible ({error}). Levantalo con: docker compose up -d mysql")
         raise RuntimeError(f"MySQL respondió pero no se pudo preparar la base de tests: {error}") from error
     return app
 
