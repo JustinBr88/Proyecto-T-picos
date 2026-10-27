@@ -98,9 +98,20 @@ python run.py
 
 Con [uv](https://docs.astral.sh/uv/) el paso 2 es `uv venv --python 3.12` + `uv pip install -r requirements-dev.txt`.
 
-### Configuración
+### Configuración (archivo `.env`)
 
-No hace falta configurar nada para desarrollo: los valores por defecto de `fancyhotel/config.py` coinciden con los de `compose.yaml`. Para cambiarlos, creá un archivo `.env` en la raíz (está en `.gitignore`):
+**El `.env` es opcional.** Sin él todo funciona, porque `fancyhotel/config.py` y `compose.yaml` traen los mismos valores por defecto. Sólo hace falta para cambiar algo de tu PC, por ejemplo el puerto si el 3306 o el 5000 ya están ocupados.
+
+Cómo funciona:
+
+1. Creás un archivo llamado `.env` en la raíz del proyecto, una variable por línea:
+   ```
+   DB_PORT=3307
+   APP_PORT=8080
+   ```
+2. Lo leen dos programas: **Docker Compose** (lo carga solo, para los `${VARIABLE:-defecto}` de `compose.yaml`) y **la app** cuando corre en el venv local (lo carga `python-dotenv` en `config.py`).
+3. **Nunca se sube al repositorio** (está en `.gitignore`) ni entra en la imagen de Docker (está en `.dockerignore`). Cada integrante tiene el suyo.
+4. Dentro de Docker la app **no** usa el `DB_HOST` del `.env`: `compose.yaml` le fija `DB_HOST=mysql` (el nombre del servicio) y el puerto interno `3306`.
 
 | Variable | Por defecto | Uso |
 |---|---|---|
@@ -112,7 +123,7 @@ No hace falta configurar nada para desarrollo: los valores por defecto de `fancy
 | `FLASK_DEBUG` | `0` (en Docker: `1`) | `1` = recarga automática y errores detallados |
 | `APP_PORT` | `5000` | Puerto de la app en tu PC (sólo Docker) |
 
-> Si cambiás usuario o contraseña después de haber levantado el contenedor, hay que recrearlo: `docker compose down -v && docker compose up -d`.
+> MySQL sólo lee el usuario y la contraseña **la primera vez** que crea su volumen. Si los cambiás después, hay que recrearlo, y eso borra la base: `docker compose down -v && docker compose up --build`.
 
 ### Usuarios de prueba
 
@@ -144,6 +155,45 @@ pytest -m integration   # sólo integración
 ```
 
 Si MySQL no está corriendo, los tests de integración aparecen como *skipped* con el motivo.
+
+## Grafo del proyecto (graphify)
+
+`graphify-out/` tiene un grafo de conocimiento de todo el repositorio: código, documentación y cómo se conectan. Sirve para entender el proyecto y para que los asistentes de IA lo consulten antes de leer archivos.
+
+| Archivo | Qué es |
+|---|---|
+| `graph.html` | El grafo interactivo: abrilo en el navegador |
+| `GRAPH_REPORT.md` | Resumen: nodos centrales, comunidades y conexiones sorprendentes |
+| `graph.json` | Los datos del grafo (lo usan las consultas y los agentes) |
+| `cache/`, `manifest.json` | Lo que ya se analizó, para no repetir trabajo ni gastar tokens |
+
+### Preparación (una vez por PC)
+
+```bash
+uv tool install graphifyy        # o: pip install graphifyy   (el paquete lleva dos "y")
+git config merge.graphify.name "graphify graph.json union merge"
+git config merge.graphify.driver "graphify merge-driver %O %A %B"
+```
+
+Las dos líneas de `git config` registran el *merge driver*: si dos ramas cambian el grafo, git **une** los dos en lugar de marcar conflicto (la regla está en `.gitattributes`).
+
+### Mantenerlo al día
+
+Regla del equipo: **cada PR actualiza el grafo en su último commit.**
+
+| Si en tu rama cambiaste… | Corré | Costo |
+|---|---|---|
+| Sólo código (`.py`, `.js`) | `graphify update .` | Gratis, sin IA |
+| Documentación (`.md`, `.html`, `compose.yaml`…) | `/graphify . --update` dentro de Claude Code | Usa IA sólo para los archivos que cambiaron |
+
+```bash
+graphify query "¿cómo se calcula el costo de una reserva?"   # preguntarle al grafo
+graphify explain "get_db()"                                   # explicar un nodo
+```
+
+Si al traer `develop` aparece un conflicto en `graph.html`, `GRAPH_REPORT.md` o `manifest.json`: quedate con cualquiera de las dos versiones (`git checkout --theirs graphify-out/`), corré `graphify update .` y hacé commit. Son archivos generados: se reconstruyen.
+
+`.graphifyignore` excluye las librerías de terceros (`static/libs/`) para que no ensucien el grafo.
 
 ## Forma de trabajo
 

@@ -15,6 +15,7 @@ Proyecto universitario: Feature Sprint con IA sobre un sistema de reservas exist
 5. Si tu propuesta fue corregida o rechazada por una persona, o te equivocaste, recordale que lo anote en [docs/AI_LOG.md](docs/AI_LOG.md).
 6. Commits en inglés con Conventional Commits y el número de issue, **sin** líneas `Co-Authored-By` ni firmas de IA.
 7. Nunca subas secretos ni archivos `.env`.
+8. Para orientarte en el código, consultá primero el grafo (`graphify query "<pregunta>"`, datos en `graphify-out/`) y después leé los archivos. Al terminar un cambio, actualizalo (ver README, "Grafo del proyecto").
 
 ## Skills del proyecto
 
