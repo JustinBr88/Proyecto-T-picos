@@ -95,7 +95,7 @@ class UpdateReservationResource(Resource):
 		checkInDate = datetime.strptime(args["checkIn"], "%Y-%m-%d")
 		checkOutDate = datetime.strptime(args["checkOut"], "%Y-%m-%d")
 		deltaDays = (checkOutDate - checkInDate).days
-		print deltaDays
+		print(deltaDays)
 		rooms = db.mysqldb.get_rooms_for_reservation(args['username'], args['reservation_id'])
 		for room in rooms:
 			if not db.mysqldb.is_room_free(room['room_number'], room['location'], args['checkIn'], args['checkOut'], args['reservation_id']):
@@ -105,7 +105,7 @@ class UpdateReservationResource(Resource):
 			if room['extra_bed_or_not'] == '1':
 				total_cost += room['extra_bed_price']
 		#For the rooms in the reservation, check if each room is free during the requested times. If the room is not free, return false.
-		print total_cost
+		print(total_cost)
 		total_cost *= deltaDays
 		message, status = db.mysqldb.update_reservation(args['username'], args['reservation_id'], args['checkIn'], args['checkOut'], total_cost)
 		if status:
@@ -198,7 +198,7 @@ class SearchRoomsResource(Resource):
 		location = args['location']
 		checkIn = args['checkIn']
 		checkOut = args['checkOut']
-		print location
+		print(location)
 		return db.mysqldb.search_rooms(location, checkIn, checkOut)
 		
 class CreditCardResource(Resource):

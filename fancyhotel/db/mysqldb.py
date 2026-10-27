@@ -193,7 +193,7 @@ class MysqlManager(object):
 				return len(rows)!=0
 
 			else:
-				print "you shouldn't be here. Names should only start with C or M."
+				print("you shouldn't be here. Names should only start with C or M.")
 				return False
 		finally:
 			cursor.close()
@@ -371,7 +371,7 @@ class MysqlManager(object):
 				else:
 					total_cost = 0
 
- 				cursor.execute(
+				cursor.execute(
 					'''UPDATE Fancy_Hotel.Reservation
 					SET cancelled_or_not = 1, total_cost = %(total_cost)s
 					WHERE reservation_id = %(reservation_id)s AND username = %(username)s
