@@ -56,6 +56,10 @@ resourceModule.factory('reservationFactory', function($resource){
 		CancelReservation:{
 			method:'GET',
 			url: '/api/reservation/:reservation_id/cancel'
+		},
+		GetAvailability:{
+			method: 'GET',
+			url: '/api/availability'
 		}
 	})
 })
@@ -240,7 +244,70 @@ angular.module('FancyHotelApp', ['ngRoute', 'ngResource', 'resourceModule'])
 	$('#endDatePicker').on("dp.change", function (e) {
 		$('#startDatePicker').data("DateTimePicker").maxDate(e.date);
 	});
-	
+
+	// Caso 2: calendario de disponibilidad del check-in. Los días "lleno" no se
+	// pueden elegir y los "parcial" se marcan con color. El check-out no se
+	// bloquea: salir un día lleno es válido (esa noche ya no se ocupa).
+	// La librería redibuja la tabla al cambiar de mes y al llamar a
+	// disabledDates(), y eso borra las clases: por eso se repinta cada vez.
+	$scope.availabilityByDay = {};
+	var availabilityRequest = null;
+
+	var paintAvailability = function(){
+		$('#startDatePicker .bootstrap-datetimepicker-widget td.day').each(function(){
+			var cell = $(this);
+			var day = moment(cell.data('day'), 'L');
+			var info = $scope.availabilityByDay[day.format('YYYY-MM-DD')];
+			cell.removeClass('day-parcial day-lleno').removeAttr('title');
+			// Los días pasados quedan en gris: pintarlos los haría parecer elegibles.
+			if(info && info.status !== 'libre' && !day.isBefore(moment(), 'day')){
+				cell.addClass('day-' + info.status)
+					.attr('title', info.free_rooms + ' de ' + info.total_rooms + ' habitaciones libres');
+			}
+		});
+	};
+
+	var loadAvailability = function(viewDate){
+		var picker = $('#startDatePicker').data("DateTimePicker");
+		if(!picker){
+			return; // vistas de este controlador sin buscador (actualizar, cancelar)
+		}
+		var request = $scope.location + '|' + moment(viewDate).format('YYYY-MM');
+		availabilityRequest = request;
+		reservationFactory.GetAvailability({
+			"location": $scope.location,
+			"month": moment(viewDate).format('YYYY-MM')
+		}).$promise.then(function(data){
+			if(request !== availabilityRequest){
+				return; // respuesta vieja: el usuario ya cambió de mes o de locación
+			}
+			var fullDays = [];
+			$scope.availabilityByDay = {};
+			data.days.forEach(function(day){
+				$scope.availabilityByDay[day.date] = day;
+				if(day.status === 'lleno'){
+					fullDays.push(moment(day.date));
+				}
+			});
+			picker.disabledDates(fullDays.length ? fullDays : false);
+			paintAvailability();
+		});
+	};
+
+	$('#startDatePicker').on("dp.show", paintAvailability);
+	$('#startDatePicker').on("dp.update", function (e) {
+		if(e.change === 'M' || e.change === 'YYYY'){
+			loadAvailability(e.viewDate);
+		}
+		else{
+			paintAvailability();
+		}
+	});
+	$scope.$watch('location', function(){
+		var picker = $('#startDatePicker').data("DateTimePicker");
+		loadAvailability(picker ? picker.viewDate() : moment());
+	});
+
 	$("#newStartDate").datetimepicker(
 		{
 			format: 'YYYY-MM-DD',
