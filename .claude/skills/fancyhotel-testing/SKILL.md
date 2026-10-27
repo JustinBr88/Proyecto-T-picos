@@ -79,7 +79,8 @@ def test_reserved_room_is_not_offered_for_overlapping_dates(client, make_reserva
 ## Comandos
 
 ```bash
-docker compose up -d          # MySQL para los tests de integración
+docker compose exec app pytest   # todo, dentro del contenedor (con `docker compose up` corriendo)
+docker compose up -d mysql    # o: sólo MySQL, para correrlos desde el venv local
 pytest                        # todo
 pytest tests/unit             # sólo unitarios (sin MySQL)
 pytest -m integration         # sólo integración

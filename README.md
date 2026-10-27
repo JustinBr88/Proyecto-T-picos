@@ -45,7 +45,8 @@ Proyecto 1 de **Tópicos Especiales II** (Prof. Regis Rivera): Feature Sprint co
 ├── tests/
 │   ├── unit/                Sin base de datos
 │   └── integration/         Contra MySQL (base de tests separada)
-├── docker-compose.yml       MySQL para desarrollo y tests
+├── Dockerfile               Imagen de desarrollo de la app
+├── compose.yaml             App + MySQL para desarrollo y tests
 └── docs/                    Especificación, fases y AI Log
 ```
 
@@ -53,11 +54,34 @@ Proyecto 1 de **Tópicos Especiales II** (Prof. Regis Rivera): Feature Sprint co
 
 ## Puesta en marcha
 
-Requisitos: **Python 3.12** y **Docker Desktop**.
+### Opción A — Todo en Docker (recomendada)
+
+Sólo necesitás **Docker Desktop**: no hace falta instalar Python ni MySQL.
 
 ```bash
-# 1. Levantar MySQL (la primera vez descarga la imagen)
-docker compose up -d
+docker compose up --build       # → http://localhost:5000  (Ctrl+C para detener)
+```
+
+La primera vez descarga las imágenes y carga los datos de prueba automáticamente. En los siguientes arranques **no borra nada**: sólo carga datos si la base está vacía.
+
+| Para… | Comando |
+|---|---|
+| Que los cambios de código se apliquen solos al guardar | `docker compose watch` (en lugar de `up`) |
+| Correr los tests | `docker compose exec app pytest` |
+| Volver a los datos de prueba originales | `docker compose exec app flask --app fancyhotel seed-db` |
+| Ver los logs de la app | `docker compose logs -f app` |
+| Detener todo | `docker compose down` |
+| Detener y **borrar** la base | `docker compose down -v` |
+
+> Para la recarga automática usamos `docker compose watch` y no carpetas montadas: Docker Desktop no siempre comparte discos externos en Windows.
+
+### Opción B — App en el venv local, MySQL en Docker
+
+Útil para depurar desde el editor. Requisitos: **Python 3.12** y **Docker Desktop**.
+
+```bash
+# 1. Levantar sólo MySQL
+docker compose up -d mysql
 
 # 2. Crear el entorno virtual e instalar dependencias
 python -m venv .venv
@@ -76,7 +100,7 @@ Con [uv](https://docs.astral.sh/uv/) el paso 2 es `uv venv --python 3.12` + `uv 
 
 ### Configuración
 
-No hace falta configurar nada para desarrollo: los valores por defecto de `fancyhotel/config.py` coinciden con los de `docker-compose.yml`. Para cambiarlos, creá un archivo `.env` en la raíz (está en `.gitignore`):
+No hace falta configurar nada para desarrollo: los valores por defecto de `fancyhotel/config.py` coinciden con los de `compose.yaml`. Para cambiarlos, creá un archivo `.env` en la raíz (está en `.gitignore`):
 
 | Variable | Por defecto | Uso |
 |---|---|---|
@@ -85,7 +109,8 @@ No hace falta configurar nada para desarrollo: los valores por defecto de `fancy
 | `DB_NAME` | `Fancy_Hotel` | Base de desarrollo |
 | `TEST_DB_NAME` | `Fancy_Hotel_test` | Base de tests (se borra en cada test) |
 | `MYSQL_ROOT_PASSWORD` | `root_dev` | Sólo para docker compose |
-| `FLASK_DEBUG` | `0` | `1` = recarga automática y errores detallados |
+| `FLASK_DEBUG` | `0` (en Docker: `1`) | `1` = recarga automática y errores detallados |
+| `APP_PORT` | `5000` | Puerto de la app en tu PC (sólo Docker) |
 
 > Si cambiás usuario o contraseña después de haber levantado el contenedor, hay que recrearlo: `docker compose down -v && docker compose up -d`.
 

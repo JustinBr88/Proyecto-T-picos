@@ -39,8 +39,13 @@ Están en `.claude/skills/`. Cargá la que corresponda **antes** de escribir có
 ## Comandos
 
 ```bash
-docker compose up -d                 # MySQL
-flask --app fancyhotel seed-db       # base con datos de prueba
-python run.py                        # http://localhost:5000
-pytest                               # tests
+# Todo en Docker
+docker compose up --build                  # app + MySQL → http://localhost:5000
+docker compose exec app pytest             # tests dentro del contenedor
+
+# App en el venv local
+docker compose up -d mysql                 # sólo MySQL
+flask --app fancyhotel seed-db             # base con datos de prueba
+python run.py                              # http://localhost:5000
+pytest                                     # tests
 ```
