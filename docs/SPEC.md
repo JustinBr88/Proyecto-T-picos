@@ -27,7 +27,7 @@ Las rutas indicadas son las de la app original; entre paréntesis, dónde quedó
 
 | ID | Ubicación | Descripción | Estado |
 |---|---|---|---|
-| BUG-1 | `db/mysqldb.py` → `search_rooms`, `is_room_free` (hoy `fancyhotel/db/rooms.py`) | La condición de ocupado (`checkin >= X AND checkout <= Y`) sólo detecta reservas **contenidas** en el rango buscado; no detecta solapamientos parciales → doble reserva. | Pendiente: Caso 2 |
+| BUG-1 | `db/mysqldb.py` → `search_rooms`, `is_room_free` (hoy `fancyhotel/db/rooms.py`) | La condición de ocupado (`checkin >= X AND checkout <= Y`) sólo detecta reservas **contenidas** en el rango buscado; no detecta solapamientos parciales → doble reserva. De 4 formas de solapamiento sólo detectaba una (la búsqueda que envuelve a la reserva). | Resuelto en Caso 2 (además, crear una reserva ahora valida disponibilidad) |
 | BUG-2 | `api.py` → `ReservationResource.put` (hoy `fancyhotel/api/reservations.py`) | `PUT /api/reservation/<id>` usa `deltaDays` sin definirlo (`NameError`) y llama a `update_reservation` con argumentos equivocados. El frontend **no** lo usa (llama a `PUT /api/reservation` con el id en el cuerpo), así que no afectaba a la UI. | Resuelto en Caso 0 |
 | BUG-3 | `db/mysqldb.py` → `user_exists` (hoy `fancyhotel/db/users.py`) | Consulta `FROM customer` en minúscula; en MySQL sobre Linux (Docker) los nombres de tabla distinguen mayúsculas. | Resuelto en Caso 0 |
 | BUG-4 | Todos los recursos con `reqparse` | Con Flask 3, flask-restful responde **415** a los GET porque intenta leer un cuerpo JSON; y `type=list` convierte cada habitación (un dict) en la lista de sus claves. | Resuelto en Caso 0 |

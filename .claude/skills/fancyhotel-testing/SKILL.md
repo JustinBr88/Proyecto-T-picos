@@ -42,7 +42,7 @@ metadata:
 
 ```python
 # tests/unit/test_overlap.py — lógica pura, sin BD
-from fancyhotel.db.rooms import overlaps
+from fancyhotel.availability import overlaps
 
 def test_partial_overlap_at_start_is_detected():
     """Regresión BUG-1: reserva 10–15, búsqueda 12–20."""

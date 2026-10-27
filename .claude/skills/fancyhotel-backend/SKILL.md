@@ -30,7 +30,7 @@ metadata:
 | Toda escritura hace `db.commit()`; si falla a mitad, `db.rollback()`. | mysql-connector no hace autocommit. |
 | Mantener la forma de las respuestas existentes (`{"result": bool, "message": ...}`) y los códigos (400 error de negocio, 401 login, 404 no encontrado). | El frontend (`controllers.js`) depende de esas claves. |
 | Cambios de esquema en `fancyhotel/db/schema.py` (diccionario `TABLES`, en orden de dependencias) y, si hace falta, ajustar `db/seed.py`. | `seed-db` recrea todo desde ahí. |
-| Lógica de negocio no trivial (fechas, precios, previsión) en **funciones puras** sin BD, con tests unitarios. | Ver skill `fancyhotel-testing`. |
+| Lógica de negocio no trivial (fechas, precios, previsión) en **funciones puras** sin BD, con tests unitarios, en un módulo de dominio propio (`fancyhotel/availability.py` es el ejemplo). Nunca dentro de `db/`. | `db/` sólo habla con MySQL; así la regla se testea sin base. Ver skill `fancyhotel-testing`. |
 
 ## Agregar un endpoint (receta)
 
