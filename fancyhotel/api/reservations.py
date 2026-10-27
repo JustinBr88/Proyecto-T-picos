@@ -17,8 +17,9 @@ def change_reservation_dates(username, reservation_id, check_in, check_out):
     """Cambia las fechas de una reserva si todas sus habitaciones están libres y
     recalcula el costo. Devuelve (cuerpo, código HTTP).
 
-    La usan los dos endpoints de actualización. Antes, ReservationResource.put
-    (el que llama el frontend) tenía su propia copia rota de esta lógica (BUG-2).
+    La usan los dos endpoints de actualización: UpdateReservationResource (el que
+    llama el frontend) y ReservationResource.put, que antes tenía su propia copia
+    rota de esta lógica (BUG-2).
     """
     total_cost = 0
     for room in reservations.get_rooms_for_reservation(username, reservation_id):

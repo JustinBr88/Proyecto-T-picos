@@ -15,3 +15,7 @@ Thumbs.db
 
 # Grafo de graphify (se regenera con /graphify; contiene rutas locales)
 graphify-out/
+
+# Configuración local de Claude Code (rutas propias de cada PC)
+.claude/launch.json
+.claude/settings.local.json

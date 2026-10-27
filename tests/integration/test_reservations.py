@@ -39,7 +39,20 @@ def test_reserved_room_is_not_offered_for_the_same_dates(client, make_reservatio
 
 
 def test_update_reservation_dates_via_frontend_endpoint(client, make_reservation):
-    """Regresión BUG-2: PUT /api/reservation/<id> (el que usa el frontend) fallaba con NameError."""
+    """PUT /api/reservation con el id en el cuerpo: es el que llama el frontend
+    (AngularJS $resource no pone en la URL los parámetros del cuerpo de un PUT)."""
+    reservation_id = make_reservation(check_in_days=10, nights=2)
+    response = client.put("/api/reservation", json={
+        "username": USERNAME, "reservation_id": str(reservation_id), "checkIn": future(20), "checkOut": future(23)})
+    assert response.status_code == 200, response.get_json()
+
+    data = _get(client, reservation_id).get_json()["data"]
+    assert (data["checkin_date"], data["checkout_date"]) == (future(20), future(23))
+    assert data["total_cost"] == 100.0 * 3
+
+
+def test_update_reservation_dates_via_id_in_url(client, make_reservation):
+    """Regresión BUG-2: PUT /api/reservation/<id> fallaba con NameError."""
     reservation_id = make_reservation(check_in_days=10, nights=2)
     response = client.put(f"/api/reservation/{reservation_id}", json={
         "username": USERNAME, "checkIn": future(20), "checkOut": future(24)})
