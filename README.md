@@ -124,8 +124,8 @@ Si MySQL no está corriendo, los tests de integración aparecen como *skipped* c
 
 Resumen (detalle en [SPEC.md §5](docs/SPEC.md)):
 
-- `main` protegida: todo entra por Pull Request aprobado por el Reviewer del caso.
-- Una rama por caso: `feature/caso-N-descripcion`.
+- `develop` es la rama de integración; `main` guarda la versión estable. Ambas protegidas: todo entra por Pull Request aprobado.
+- Una rama por caso (`feature/caso-N-descripcion`), que sale de `develop` y vuelve a `develop` con el Reviewer del caso.
 - Commits con [Conventional Commits](https://www.conventionalcommits.org/es/) y referencia al issue: `feat(calendar): add availability endpoint (#3)`.
 - Cada uso relevante de IA se registra en [docs/AI_LOG.md](docs/AI_LOG.md) **en el momento**, no al final.
 

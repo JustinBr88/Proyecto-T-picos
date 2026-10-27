@@ -176,7 +176,9 @@ Los criterios de aceptación usan el formato *Dado / Cuando / Entonces*. Cada cr
 ## 5. Reglas de trabajo
 
 ### Git
-- `main` protegida: sólo entra código por Pull Request aprobado.
+- Dos ramas permanentes, ambas protegidas (sólo se entra por Pull Request aprobado):
+  - `develop`: integración. Las ramas de cada caso salen de `develop` y vuelven a `develop`.
+  - `main`: versión estable y entregable. Sólo recibe un PR `develop → main` cuando lo integrado pasó la regresión (fin de cada fase y entrega final).
 - Una rama por caso: `feature/caso-N-descripcion` (p. ej. `feature/caso-2-calendario`). Correcciones: `fix/descripcion`.
 - Commits con Conventional Commits y referencia al issue: `feat(calendar): add availability endpoint (#3)`.
 - Cada historia es un **issue** en GitHub con los criterios de aceptación como checklist y la etiqueta `caso-N`.
@@ -192,7 +194,7 @@ Los criterios de aceptación usan el formato *Dado / Cuando / Entonces*. Cada cr
 3. Revisión de código aprobada por el Reviewer.
 4. QA validó los criterios y documentó el resultado en el PR.
 5. Entradas del AI Log registradas para ese caso.
-6. Mergeado a `main` y issue cerrado.
+6. Mergeado a `develop` y issue cerrado (GitHub sólo cierra solo los issues al mergear en `main`: cerrarlo a mano con referencia al PR).
 
 ### Estrategia de pruebas
 - **Unitarias** (sin BD): lógica pura — solapamiento de fechas, previsión, hash de contraseñas, validaciones.

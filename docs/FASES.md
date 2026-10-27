@@ -23,13 +23,13 @@ Cada fase tiene un **criterio de salida**: no se pasa a la siguiente hasta cumpl
 | Dar acceso de colaborador a Ana y Bethel en el repo | Justin |
 | Crear los issues de los casos 0–5 con sus criterios de aceptación como checklist | Justin |
 | Crear las etiquetas `caso-0` … `caso-5`, `bug`, `ia-rechazado` | Justin |
-| Proteger `main` (PR obligatorio, 1 aprobación) | Justin |
+| Crear `develop` y las ramas de cada caso; proteger `main` y `develop` (PR obligatorio, 1 aprobación) | Justin |
 | Crear `docs/AI_LOG.md` con la tabla y las tres secciones | Ana |
 | Crear la plantilla de PR (`.github/pull_request_template.md`) | Bethel |
 | Cada integrante instala Python 3.12 y MySQL 8 localmente | Todos |
 | Decidir: MySQL local vs. Docker Compose (ver decisiones abiertas) | Todos |
 
-**Criterio de salida:** issues creados, `main` protegida, plantillas en el repo y todos con el entorno instalado.
+**Criterio de salida:** issues creados, `main` y `develop` protegidas, plantillas en el repo y todos con el entorno instalado.
 
 ---
 
@@ -54,7 +54,7 @@ Cada fase tiene un **criterio de salida**: no se pasa a la siguiente hasta cumpl
 
 **Ojo con la IA en esta fase:** la migración Python 2 → 3 y las versiones de Flask / flask_restful son terreno fértil para respuestas desactualizadas o incorrectas. Verificar cada sugerencia contra la documentación oficial y registrar los errores en el AI Log: es la primera evidencia de las restricciones 8 y 9.
 
-**Criterio de salida:** CA0.1 a CA0.6 cumplidos, PR mergeado a `main`.
+**Criterio de salida:** CA0.1 a CA0.6 cumplidos, PR mergeado a `develop` y las ramas de los casos actualizadas desde `develop` (`git merge develop`).
 
 ---
 
@@ -74,11 +74,11 @@ Cada fase tiene un **criterio de salida**: no se pasa a la siguiente hasta cumpl
 3. **Desarrollar** con la herramienta de IA; registrar en el AI Log los prompts que importaron.
 4. **PR** con la plantilla → el Reviewer revisa el código.
 5. **QA** valida cada criterio de aceptación y comenta el resultado en el PR.
-6. **Merge** a `main` y cierre del issue.
+6. **Merge** a `develop` y cierre del issue.
 
 **Archivos compartidos (riesgo de conflictos):**
 - `api.py`, `serve.py`, `db/mysqldb.py` y `controllers.js` los tocan los tres casos.
-- Regla: cada caso agrega sus funciones y recursos **al final** de su sección y hace `git pull --rebase origin main` antes de abrir el PR. Quien mergea segundo resuelve los conflictos.
+- Regla: cada caso agrega sus funciones y recursos **al final** de su sección y hace `git pull --rebase origin develop` antes de abrir el PR. Quien mergea segundo resuelve los conflictos.
 
 **Criterio de salida:** los tres PR mergeados, con tests en verde y QA documentado.
 
@@ -101,13 +101,14 @@ Mismo ciclo que la Fase 2. El Caso 5 puede arrancar antes, durante la Fase 2, si
 
 | Tarea | Responsable |
 |---|---|
-| Regresión completa sobre `main` con una base recién sembrada | Todos (cada uno prueba flujos que **no** desarrolló) |
+| Regresión completa sobre `develop` con una base recién sembrada | Todos (cada uno prueba flujos que **no** desarrolló) |
+| PR `develop → main` con el resultado de la regresión | Justin |
 | Suite completa de pytest en verde | Ana |
 | Revisar el AI Log: ¿cada caso tiene al menos una respuesta incorrecta, un cambio rechazado y una decisión humana? | Bethel |
 | Verificar la tabla de trazabilidad del SPEC (sección 7) | Justin |
 | Tag de versión `v1.0` | Justin |
 
-**Criterio de salida:** `main` estable, tests en verde, AI Log completo.
+**Criterio de salida:** `develop` mergeado a `main`, tests en verde, AI Log completo.
 
 ---
 

@@ -28,12 +28,13 @@ metadata:
 
 ## Reglas críticas
 
-- `main` está protegida: **todo entra por PR**. Nunca `push` directo ni `push --force` a `main`.
-- Una rama por caso, creada desde `main` actualizado. Correcciones sueltas: `fix/descripcion-corta`.
+- Dos ramas permanentes y protegidas: **`develop`** (integración) y **`main`** (versión estable). Nunca `push` directo ni `push --force` a ninguna de las dos.
+- Las ramas de los casos ya existen en GitHub y salen de `develop`; su PR va **contra `develop`**, nunca contra `main`. Correcciones sueltas: `fix/descripcion-corta`, también desde `develop`.
+- `main` sólo recibe un PR `develop → main` al cerrar una fase, después de la regresión.
 - Commits en inglés con [Conventional Commits](https://www.conventionalcommits.org/es/) y el issue al final: `tipo(ámbito): descripción (#N)`.
 - Commits chicos y con un solo propósito: es la evidencia de "commits identificables".
 - **Sin** líneas `Co-Authored-By` ni firmas de IA en los commits: el uso de IA se documenta en el AI Log y en el PR.
-- Antes de abrir el PR: `git pull --rebase origin main` y `pytest` en verde.
+- Antes de abrir el PR: `git pull --rebase origin develop` y `pytest` en verde.
 - `api/__init__.py`, `controllers.js` y `db/schema.py` los tocan varios casos: agregar lo nuevo **al final** de su sección para reducir conflictos. Resuelve los conflictos quien mergea segundo.
 - El **Reviewer** aprueba el código; el **QA** comenta el resultado de cada criterio. Recién ahí se mergea (*squash* o *merge*, el equipo decide uno y lo mantiene).
 
@@ -54,19 +55,31 @@ metadata:
 3. PR aprobado por el Reviewer.
 4. QA validó y lo dejó comentado en el PR.
 5. AI Log actualizado.
-6. Mergeado a `main` e issue cerrado.
+6. Mergeado a `develop` e issue cerrado a mano (GitHub sólo los cierra solo al mergear en `main`).
+
+## Issues
+
+| Caso | Issue |
+|---|---|
+| 0 | #2 |
+| 1 | #3 |
+| 2 | #4 |
+| 3 | #5 |
+| 4 | #6 |
+| 5 | #7 |
 
 ## Comandos
 
 ```bash
-git switch main && git pull
-git switch -c feature/caso-2-calendario
+git fetch origin
+git switch feature/caso-2-calendario            # la rama ya existe en GitHub
+git merge origin/develop                        # traer lo último de develop
 git add -p                                      # revisar lo que entra en el commit
-git commit -m "feat(calendar): add availability endpoint (#3)"
-git pull --rebase origin main
+git commit -m "feat(calendar): add availability endpoint (#4)"
+git pull --rebase origin develop
 pytest
-git push -u origin feature/caso-2-calendario
-gh pr create --base main --fill                 # o desde GitHub
+git push
+gh pr create --base develop --fill              # o desde GitHub (base: develop)
 ```
 
 ## Recursos

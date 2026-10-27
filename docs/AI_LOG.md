@@ -25,6 +25,7 @@ Registro del uso de IA en el proyecto. Se completa **durante** el desarrollo, no
 | 7 | 2026-10-27 | 0 | Justin | Infraestructura | Claude Code | Preparar MySQL para desarrollo | Como la PC no tenía MySQL instalado, propuso Docker Compose con valores por defecto que coinciden con `config.py` | Pendiente de confirmar con el equipo (decisión abierta de la Fase 0) | `ced47b8` |
 | 8 | 2026-10-27 | 0 | Justin | Testing | Claude Code | Correr los tests de integración con Docker | Detectó que la carpeta montada en el contenedor llegaba vacía (Docker Desktop no compartía el disco D), que los tests ocultaban ese error como *skipped* y que los comandos CLI fallaban desde los tests. Corrigió los tres: 34/34 en verde | Aceptado | `7255a33` |
 | 9 | 2026-10-27 | 0 | Justin | QA | Claude Code | Probar en el navegador login, búsqueda, reserva, actualización y cancelación | Los cinco flujos funcionan. Encontró BUG-6 (error del frontend original en "Actualizar reserva") y que su propia afirmación sobre BUG-2 era falsa (respuesta incorrecta #4) | BUG-6 queda pendiente para el equipo | `docs/SPEC.md` §1 |
+| 10 | 2026-10-27 | — | Justin | Gestión | Claude Code | Crear issues, etiquetas y ramas en GitHub y proteger `main` | Issues #2–#7 generados desde el SPEC, etiquetas `caso-N`, `ia-incorrecta` y `ia-rechazado`, rama `develop` y ramas de cada caso. Asignó por error todos los issues a Justin; lo corrigió dejando sólo los suyos | Aceptado | Issues #2–#7 |
 
 ---
 
@@ -57,3 +58,5 @@ Registro del uso de IA en el proyecto. Se completa **durante** el desarrollo, no
 | 2 | 2026-10-27 | Reparto de roles por caso (Dev / Reviewer / QA rotando) | Equipo | Lo pide el enunciado; cada integrante pasa por los tres roles |
 | 3 | 2026-10-27 | Aceptar las historias propuestas para los Casos 4 y 5 | Justin | Se integran con los Casos 1 y 3; pendiente de confirmar con Ana y Bethel |
 | 4 | 2026-10-27 | Aprovechar la migración para reorganizar las carpetas y que el proyecto sea fácil de entender | Justin | Facilita el trabajo en paralelo de la Fase 2 (menos conflictos en un archivo único) |
+| 5 | 2026-10-27 | Agregar la rama `develop` para integración y dejar `main` sólo para versiones estables; crear de antemano las ramas de cada caso | Justin | Que `main` quede limpio y siempre entregable |
+| 6 | 2026-10-27 | Agregar skills de proyecto (backend, frontend, testing, docs, git) versionadas en el repo | Justin | Que Ana y Bethel trabajen con las mismas convenciones al clonar |
