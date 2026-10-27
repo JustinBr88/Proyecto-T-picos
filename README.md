@@ -129,6 +129,14 @@ Resumen (detalle en [SPEC.md §5](docs/SPEC.md)):
 - Commits con [Conventional Commits](https://www.conventionalcommits.org/es/) y referencia al issue: `feat(calendar): add availability endpoint (#3)`.
 - Cada uso relevante de IA se registra en [docs/AI_LOG.md](docs/AI_LOG.md) **en el momento**, no al final.
 
+## Seguridad del repositorio
+
+Activado en GitHub (pestaña *Security*):
+
+- **Escaneo de secretos con bloqueo de push:** GitHub rechaza un `git push` que contenga tokens o claves reconocibles.
+- **Alertas de Dependabot:** avisan si una dependencia de `requirements.txt` tiene una vulnerabilidad conocida. La actualización se hace con un PR normal contra `develop`.
+- **CodeQL:** análisis estático de Python y JavaScript en cada push y PR a las ramas protegidas.
+
 ## Problemas conocidos
 
 | ID | Descripción | Se resuelve en |
