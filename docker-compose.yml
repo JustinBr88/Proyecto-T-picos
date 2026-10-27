@@ -19,7 +19,9 @@ services:
       - "${DB_PORT:-3306}:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    configs:
+      - source: grant-test-db
+        target: /docker-entrypoint-initdb.d/01-grant-test-db.sql
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
       interval: 5s
@@ -28,3 +30,13 @@ services:
 
 volumes:
   mysql-data:
+
+# Script que MySQL ejecuta una sola vez, al crear el contenedor: da permisos al
+# usuario de la app sobre la base de tests (la de desarrollo ya la crea
+# MYSQL_DATABASE). Va inline y no como carpeta montada porque Docker Desktop no
+# siempre comparte las carpetas del host (p. ej. discos externos en Windows).
+configs:
+  grant-test-db:
+    content: |
+      GRANT ALL PRIVILEGES ON `${TEST_DB_NAME:-Fancy_Hotel_test}`.* TO '${DB_USER:-fancyhotel}'@'%';
+      FLUSH PRIVILEGES;

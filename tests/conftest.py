@@ -14,6 +14,9 @@ from fancyhotel.db import schema
 from fancyhotel.db.connection import get_db
 from tests.support import CARD_NUMBER, CUSTOMER, MANAGER, ROOMS, future
 
+# 2003: no se puede conectar · 2005: host desconocido · 2013: se perdió la conexión
+MYSQL_UNREACHABLE_ERRORS = {2003, 2005, 2013}
+
 
 @pytest.fixture(scope="session")
 def app():
@@ -25,7 +28,11 @@ def app():
         with app.app_context():
             schema.create_database()
     except mysql.connector.Error as error:
-        pytest.skip(f"MySQL no disponible ({error}). Levantalo con: docker compose up -d")
+        # Sólo se saltean si MySQL no responde; cualquier otro error (permisos,
+        # credenciales) tiene que verse como fallo, no esconderse como "skipped".
+        if error.errno in MYSQL_UNREACHABLE_ERRORS:
+            pytest.skip(f"MySQL no disponible ({error}). Levantalo con: docker compose up -d")
+        raise RuntimeError(f"MySQL respondió pero no se pudo preparar la base de tests: {error}") from error
     return app
 
 
