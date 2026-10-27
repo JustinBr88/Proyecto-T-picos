@@ -76,13 +76,13 @@ def test_availability_returns_every_day_of_the_month(client):
     assert body["days"][0]["total_rooms"] == len(ROOMS)
 
 
-def test_availability_marks_partial_and_full_days(client, make_reservation):
-    """CA2.4: un día con una de dos habitaciones ocupadas es parcial; con las dos, lleno."""
+def test_availability_counts_free_rooms_and_marks_full_days(client, make_reservation):
+    """CA2.4 con las 2 habitaciones de prueba: 1 libre (50 %) sigue siendo "libre"; 0 libres, "lleno".
+    El umbral de "parcial" (30 % o menos) se prueba en tests/unit/test_availability.py."""
     make_reservation(check_in_days=10, nights=2, room=ROOMS[0])
     make_reservation(check_in_days=11, nights=1, room=ROOMS[1])
-    assert _status(client, 10)["status"] == "parcial"
-    assert _status(client, 11)["status"] == "lleno"
-    assert _status(client, 11)["free_rooms"] == 0
+    assert (_status(client, 10)["free_rooms"], _status(client, 10)["status"]) == (1, "libre")
+    assert (_status(client, 11)["free_rooms"], _status(client, 11)["status"]) == (0, "lleno")
     assert _status(client, 12)["status"] == "libre"   # día de check-out de ambas
 
 

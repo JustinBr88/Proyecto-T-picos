@@ -12,6 +12,11 @@ FREE = "libre"
 PARTIAL = "parcial"
 FULL = "lleno"
 
+# Un día es "parcial" cuando queda esta fracción de habitaciones libres o menos.
+# Decisión humana #8 (AI_LOG): con "cualquier habitación ocupada" casi todos los
+# días salían parciales y la marca no le decía nada al cliente.
+PARTIAL_THRESHOLD_PERCENT = 30
+
 _MONTH_PATTERN = re.compile(r"^(\d{4})-(\d{2})$")
 
 
@@ -42,11 +47,12 @@ def month_range(year, month):
 
 
 def day_status(free_rooms, total_rooms):
+    """lleno: ninguna libre · parcial: 30 % o menos libres · libre: el resto."""
     if free_rooms <= 0:
         return FULL
-    if free_rooms >= total_rooms:
-        return FREE
-    return PARTIAL
+    if free_rooms * 100 <= total_rooms * PARTIAL_THRESHOLD_PERCENT:
+        return PARTIAL
+    return FREE
 
 
 def monthly_availability(year, month, total_rooms, stays):
