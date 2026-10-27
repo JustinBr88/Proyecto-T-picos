@@ -24,6 +24,7 @@ Proyecto 1 de **Tópicos Especiales II** (Prof. Regis Rivera): Feature Sprint co
 │   ├── __init__.py          create_app(): arma la app
 │   ├── config.py            Configuración (variables de entorno)
 │   ├── cli.py               Comandos init-db y seed-db
+│   ├── availability.py      Reglas de disponibilidad: lógica pura, sin BD (Caso 2)
 │   ├── api/                 Capa HTTP: un módulo por dominio
 │   │   ├── __init__.py      ← mapa de TODAS las rutas de la API
 │   │   ├── auth.py          Registro y login
@@ -133,7 +134,6 @@ Resumen (detalle en [SPEC.md §5](docs/SPEC.md)):
 
 | ID | Descripción | Se resuelve en |
 |---|---|---|
-| BUG-1 | La disponibilidad no detecta solapamientos parciales de fechas (`db/rooms.py`) | Caso 2 |
 | BUG-6 | "Actualizar reserva" muestra costo 0 en pantalla (error en `controllers.js`; el backend guarda bien) | Pendiente |
 | — | Contraseñas y CVV guardados en texto plano | Caso 4 |
 | — | Los reportes están fijos a agosto y septiembre (`db/reports.py`) | Caso 3 (a evaluar) |
