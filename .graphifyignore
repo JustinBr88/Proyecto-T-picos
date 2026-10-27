@@ -1,0 +1,3 @@
+# Archivos que graphify no analiza (mismo formato que .gitignore).
+# Librerías de terceros minificadas: sólo agregan ruido al grafo.
+fancyhotel/static/libs/

@@ -1,3 +1,9 @@
 * text=auto eol=lf
 *.png binary
 *.jpg binary
+
+# Grafo de graphify: archivos generados (GitHub no muestra su diff en los PR).
+graphify-out/** linguist-generated=true -diff
+# Si dos ramas cambian el grafo, git une ambos en lugar de marcar conflicto.
+# Requiere registrar el driver una vez por PC (ver README, "Grafo del proyecto").
+graphify-out/graph.json merge=graphify

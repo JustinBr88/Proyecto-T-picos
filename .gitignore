@@ -13,8 +13,13 @@ __pycache__/
 Thumbs.db
 .DS_Store
 
-# Grafo de graphify (se regenera con /graphify; contiene rutas locales)
-graphify-out/
+# Grafo de graphify: se versiona para que todo el equipo lo actualice.
+# Sólo se excluyen los archivos propios de cada PC (ruta del intérprete y de la
+# carpeta) y los temporales de una corrida.
+graphify-out/.graphify_*
+!graphify-out/.graphify_labels.json
+graphify-out/.needs_update
+graphify-out/cost.json
 
 # Configuración local de Claude Code (rutas propias de cada PC)
 .claude/launch.json
