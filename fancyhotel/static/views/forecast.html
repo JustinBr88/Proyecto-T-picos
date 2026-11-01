@@ -1,0 +1,29 @@
+<div class="container" ng-if="userType === 'manager'">
+  <h2>Previsión de la demanda hotelera</h2>
+  <p>Las cifras representan noches de habitación por mes de estancia. La ocupación usa el inventario actual.</p>
+  <p class="alert alert-warning" ng-if="data.demonstration_data">Datos de demostración generados para desarrollo; no representan reservas reales de clientes.</p>
+  <form class="form-inline" ng-submit="load()">
+    <label>Ubicación <select class="form-control" ng-model="filters.location"><option value="">Todas</option><option ng-repeat="place in data.locations" value="{{place}}">{{place}}</option></select></label>
+    <label>Categoría <select class="form-control" ng-model="filters.type"><option value="">Todas</option><option ng-repeat="kind in data.room_types" value="{{kind}}">{{kind}}</option></select></label>
+    <label>Meses históricos <input class="form-control" type="number" min="3" max="24" ng-model="filters.months" required></label>
+    <label>Meses previstos <input class="form-control" type="number" min="1" max="6" ng-model="filters.horizon" required></label>
+    <button class="btn btn-primary" type="submit">Actualizar</button>
+  </form>
+  <p ng-if="loading">Cargando datos…</p>
+  <p class="text-danger" ng-if="error">{{error}}</p>
+  <p ng-if="data.insufficient_data">Datos insuficientes para prever: se requieren al menos tres meses completos desde la primera estancia registrada.</p>
+  <p ng-if="data && !data.history.length">No hay habitaciones disponibles para mostrar.</p>
+  <div class="row" ng-if="data.history.length">
+    <div class="col-sm-6"><strong>Demanda histórica:</strong> {{totalHistorical}} noches de habitación</div>
+    <div class="col-sm-6" ng-if="data.forecast.length"><strong>Demanda prevista:</strong> {{totalForecast}} noches de habitación</div>
+  </div>
+  <div ng-if="data.history.length">
+    <p ng-if="data.forecast.length">Método: media móvil de tres meses.</p>
+    <p ng-repeat="(place, error) in data.backtest_mae" ng-if="error !== null">Error retrospectivo medio en {{place}}: {{error}} noches de habitación.</p>
+    <div style="max-width:900px"><canvas id="historyChart" aria-label="Demanda histórica"></canvas></div>
+    <div style="max-width:900px"><canvas id="forecastChart" aria-label="Demanda histórica y prevista"></canvas></div>
+    <div style="max-width:900px"><canvas id="occupancyChart" aria-label="Ocupación por ubicación"></canvas></div>
+  </div>
+  <a href="#/portal">Volver al portal</a>
+</div>
+<p ng-if="userType !== 'manager'">Inicia sesión como administrador para consultar la previsión.</p>

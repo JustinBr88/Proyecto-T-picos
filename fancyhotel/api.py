@@ -1,6 +1,20 @@
 from flask_restful import Resource, reqparse, abort, request
+<<<<<<< Updated upstream
 import db #instantiates the database so we don't have to do that in here
 from datetime import datetime
+=======
+<<<<<<< Updated upstream
+import db #instantiates the database so we don't have to do that in here
+from datetime import datetime
+=======
+from flask import session, current_app
+import db #instantiates the database so we don't have to do that in here
+from datetime import datetime
+from datetime import date, timedelta
+from calendar import monthrange
+from forecast import monthly_series, moving_average, backtest, next_month, validate_filters
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 
 
@@ -44,8 +58,22 @@ class LoginResource(Resource):
 		password = args['password']
 
 		if db.mysqldb.login(username, password):
+<<<<<<< Updated upstream
 			return {"message": "You logged in!", "result": True}
 		else:
+=======
+<<<<<<< Updated upstream
+			return {"message": "You logged in!", "result": True}
+		else:
+=======
+			session.clear()
+			session['username'] = username
+			session['role'] = 'manager' if username.startswith('M') else 'customer'
+			return {"message": "You logged in!", "result": True}
+		else:
+			session.clear()
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 			return {"error": "Login information invalid. Check your username or password", "result": False}, 401
 
 class CreateReservationResource(Resource):
@@ -95,7 +123,15 @@ class UpdateReservationResource(Resource):
 		checkInDate = datetime.strptime(args["checkIn"], "%Y-%m-%d")
 		checkOutDate = datetime.strptime(args["checkOut"], "%Y-%m-%d")
 		deltaDays = (checkOutDate - checkInDate).days
+<<<<<<< Updated upstream
 		print deltaDays
+=======
+<<<<<<< Updated upstream
+		print deltaDays
+=======
+		print(deltaDays)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 		rooms = db.mysqldb.get_rooms_for_reservation(args['username'], args['reservation_id'])
 		for room in rooms:
 			if not db.mysqldb.is_room_free(room['room_number'], room['location'], args['checkIn'], args['checkOut'], args['reservation_id']):
@@ -105,7 +141,15 @@ class UpdateReservationResource(Resource):
 			if room['extra_bed_or_not'] == '1':
 				total_cost += room['extra_bed_price']
 		#For the rooms in the reservation, check if each room is free during the requested times. If the room is not free, return false.
+<<<<<<< Updated upstream
 		print total_cost
+=======
+<<<<<<< Updated upstream
+		print total_cost
+=======
+		print(total_cost)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 		total_cost *= deltaDays
 		message, status = db.mysqldb.update_reservation(args['username'], args['reservation_id'], args['checkIn'], args['checkOut'], total_cost)
 		if status:
@@ -198,9 +242,65 @@ class SearchRoomsResource(Resource):
 		location = args['location']
 		checkIn = args['checkIn']
 		checkOut = args['checkOut']
+<<<<<<< Updated upstream
 		print location
 		return db.mysqldb.search_rooms(location, checkIn, checkOut)
 		
+=======
+<<<<<<< Updated upstream
+		print location
+		return db.mysqldb.search_rooms(location, checkIn, checkOut)
+		
+=======
+		print(location)
+		return db.mysqldb.search_rooms(location, checkIn, checkOut)
+
+class ForecastReportResource(Resource):
+	def get(self):
+		if session.get('role') != 'manager' or not session.get('username', '').startswith('M'):
+			return {'error': 'Manager login required'}, 403
+		location = request.args.get('location') or None
+		room_type = request.args.get('type') or None
+		try:
+			months, horizon = validate_filters(request.args.get('months', '12'), request.args.get('horizon', '3'))
+		except ValueError:
+			return {'error': 'Invalid filters'}, 400
+		try:
+			end = date.today().replace(day=1)
+			start = end
+			for _ in range(months):
+				start = (start - timedelta(days=1)).replace(day=1)
+			capacities, locations, room_types, stays = db.mysqldb.forecast_data(start, end, location, room_type)
+			if location and location not in locations:
+				return {'error': 'Unknown location'}, 400
+			if room_type and room_type not in room_types:
+				return {'error': 'Unknown room type'}, 400
+			history = monthly_series(stays, capacities, start, end)
+			forecast = []
+			backtests = {}
+			for place, capacity in capacities.items():
+				series = [row['room_nights'] for row in history if row['location'] == place]
+				first = next((i for i, value in enumerate(series) if value > 0), None)
+				values = series[first:] if first is not None else []
+				backtests[place] = backtest(values)
+				predictions = moving_average(values, horizon)
+				if predictions is not None:
+					month = end
+					for value in predictions:
+						available = capacity * monthrange(month.year, month.month)[1]
+						forecast.append({'month': month.isoformat()[:7], 'location': place, 'room_nights': value,
+						                 'occupancy_percent': round(100 * min(value, available) / available, 1) if available else None})
+						month = next_month(month)
+			return {'history': history, 'forecast': forecast, 'locations': locations, 'room_types': room_types,
+			        'method': 'Three-month moving average', 'capacity_basis': 'current inventory',
+			        'backtest_mae': backtests,
+			        'insufficient_data': not bool(forecast)}
+		except Exception:
+			current_app.logger.exception('Unable to calculate forecast')
+			return {'error': 'Unable to calculate forecast'}, 500
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 class CreditCardResource(Resource):
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()

@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 from flask import Flask, render_template
 from flask_restful import Api
 import api as restapi
@@ -33,3 +37,15 @@ if __name__ == '__main__':
 	app.run('0.0.0.0', 5000, debug=True)
 
 
+<<<<<<< Updated upstream
+=======
+=======
+"""Legacy entry point; use ``python run.py`` from the repository root."""
+from fancyhotel import create_app
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000, debug=app.config["DEBUG"])
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes

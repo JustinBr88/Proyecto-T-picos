@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Configuración local y secretos
+.env
+.env.*
+!.env.example
+
+# Editores y sistema operativo
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# Archivos generados localmente
+*.log
+graphify-out/
+.claude/launch.json
+.claude/settings.local.json

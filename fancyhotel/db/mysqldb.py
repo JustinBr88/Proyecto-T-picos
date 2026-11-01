@@ -1,10 +1,25 @@
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+import os
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 import mysql.connector
 from datetime import datetime
 
 class MysqlManager(object):
 
 	def __init__(self):
+<<<<<<< Updated upstream
 		self.connection = mysql.connector.connect(user='root', password='password', host='127.0.0.1', database='sys')
+=======
+<<<<<<< Updated upstream
+		self.connection = mysql.connector.connect(user='root', password='password', host='127.0.0.1', database='sys')
+=======
+		self.connection = mysql.connector.connect(user=os.environ.get('MYSQL_USER', 'root'), password=os.environ.get('MYSQL_PASSWORD', ''), host=os.environ.get('MYSQL_HOST', '127.0.0.1'), database='sys')
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 		self.init_db()
 
 
@@ -112,7 +127,15 @@ class MysqlManager(object):
 		finally:
 			cursor.close()
 			self.connection.close() #closing the initial sys connection and reconnecting to our new db
+<<<<<<< Updated upstream
 			self.connection = mysql.connector.connect(user='root', password='password', host='127.0.0.1', database='Fancy_Hotel')
+=======
+<<<<<<< Updated upstream
+			self.connection = mysql.connector.connect(user='root', password='password', host='127.0.0.1', database='Fancy_Hotel')
+=======
+			self.connection = mysql.connector.connect(user=os.environ.get('MYSQL_USER', 'root'), password=os.environ.get('MYSQL_PASSWORD', ''), host=os.environ.get('MYSQL_HOST', '127.0.0.1'), database='Fancy_Hotel')
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 
 
@@ -193,11 +216,46 @@ class MysqlManager(object):
 				return len(rows)!=0
 
 			else:
+<<<<<<< Updated upstream
 				print "you shouldn't be here. Names should only start with C or M."
+=======
+<<<<<<< Updated upstream
+				print "you shouldn't be here. Names should only start with C or M."
+=======
+				print("you shouldn't be here. Names should only start with C or M.")
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 				return False
 		finally:
 			cursor.close()
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+	def forecast_data(self, start, end, location=None, room_type=None):
+		cursor = self.connection.cursor()
+		try:
+			params = {'location': location, 'room_type': room_type}
+			cursor.execute('SELECT DISTINCT location FROM Fancy_Hotel.Room ORDER BY location')
+			locations = [row[0] for row in cursor.fetchall()]
+			cursor.execute('SELECT location, COUNT(*) FROM Fancy_Hotel.Room WHERE (%(location)s IS NULL OR location = %(location)s) AND (%(room_type)s IS NULL OR type = %(room_type)s) GROUP BY location', params)
+			capacities = dict(cursor.fetchall())
+			cursor.execute('SELECT DISTINCT type FROM Fancy_Hotel.Room ORDER BY type')
+			room_types = [row[0] for row in cursor.fetchall()]
+			cursor.execute('''SELECT res.reservation_id, res.checkin_date, res.checkout_date, bed.location, bed.room_number
+				FROM Fancy_Hotel.Reservation res JOIN Fancy_Hotel.Reserves_Extra_Bed bed ON bed.reservation_id = res.reservation_id
+				JOIN Fancy_Hotel.Room room ON room.location = bed.location AND room.room_number = bed.room_number
+				WHERE res.cancelled_or_not = '0' AND res.checkin_date < %(end)s AND res.checkout_date > %(start)s
+				AND (%(location)s IS NULL OR bed.location = %(location)s)
+				AND (%(room_type)s IS NULL OR room.type = %(room_type)s)''',
+				dict(params, start=start, end=end))
+			return capacities, locations, room_types, cursor.fetchall()
+		finally:
+			cursor.close()
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 	def search_rooms(self, location, checkinDate, checkoutDate):
 		cursor = self.connection.cursor()
 		try:
@@ -371,7 +429,15 @@ class MysqlManager(object):
 				else:
 					total_cost = 0
 
+<<<<<<< Updated upstream
  				cursor.execute(
+=======
+<<<<<<< Updated upstream
+ 				cursor.execute(
+=======
+				cursor.execute(
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 					'''UPDATE Fancy_Hotel.Reservation
 					SET cancelled_or_not = 1, total_cost = %(total_cost)s
 					WHERE reservation_id = %(reservation_id)s AND username = %(username)s

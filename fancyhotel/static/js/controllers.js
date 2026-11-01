@@ -27,6 +27,10 @@ resourceModule.factory('reportFactory', function($resource){
 			RevenueReport: {
 				method: 'GET',
 				url: '/api/reports/revenue'
+			},
+			Forecast: {
+				method: 'GET',
+				url: '/api/reports/forecast'
 			}
 	})
 })
@@ -593,6 +597,63 @@ angular.module('FancyHotelApp', ['ngRoute', 'ngResource', 'resourceModule'])
 
 })
 
+.controller('forecastController', function($scope, $rootScope, reportFactory, $timeout){
+	$scope.filters = {location: '', type: '', months: 12, horizon: 3};
+	$scope.charts = [];
+	var requestId = 0;
+	$scope.load = function(){
+		if ($scope.filters.months < 3 || $scope.filters.months > 24 || $scope.filters.horizon < 1 || $scope.filters.horizon > 6) {
+			$scope.error = 'Filtros inválidos'; return;
+		}
+		var thisRequest = ++requestId;
+		$scope.charts.forEach(function(chart){ chart.destroy(); });
+		$scope.charts = [];
+		$scope.data = null;
+		$scope.loading = true; $scope.error = null;
+		reportFactory.Forecast($scope.filters).$promise.then(function(data){
+			if (thisRequest !== requestId) return;
+			$scope.data = data;
+			$scope.totalHistorical = data.history.reduce(function(sum, row){return sum + row.room_nights;}, 0);
+			$scope.totalForecast = data.forecast.reduce(function(sum, row){return sum + row.room_nights;}, 0);
+			$scope.loading = false;
+			$timeout(function(){
+				if (thisRequest !== requestId) return;
+				if (!window.Chart) { $scope.error = 'No se pudo cargar Chart.js'; return; }
+				var places = [];
+				var observedMonths = [];
+				var allMonths = [];
+				data.history.forEach(function(row){
+					if (places.indexOf(row.location) < 0) places.push(row.location);
+					if (observedMonths.indexOf(row.month) < 0) observedMonths.push(row.month);
+				});
+				allMonths = observedMonths.slice();
+				data.forecast.forEach(function(row){ if (allMonths.indexOf(row.month) < 0) allMonths.push(row.month); });
+				function draw(id, rows, field, title, predicted){
+					var canvas = document.getElementById(id);
+					if (!canvas) return;
+				var months = predicted ? allMonths : observedMonths;
+					var datasets = [];
+					places.forEach(function(place, index){
+						var color = ['#1769aa','#a34b00','#427a25','#733c91'][index % 4];
+						datasets.push({label: place + ' observado', data: months.map(function(month){ var row = rows.find(function(item){return item.month === month && item.location === place;}); return row ? row[field] : null;}), borderColor: color, fill: false});
+						if (predicted && data.forecast.length) datasets.push({label: place + ' previsto', data: months.map(function(month){ var row = data.forecast.find(function(item){return item.month === month && item.location === place;}); return row ? row[field] : null;}), borderColor: color, borderDash: [6,4], fill: false});
+					});
+					$scope.charts.push(new Chart(canvas, {type:'line', data:{labels:months, datasets:datasets}, options:{responsive:true, title:{display:true,text:title}, scales:{yAxes:[{ticks:{beginAtZero:true},scaleLabel:{display:true,labelString:field === 'room_nights' ? 'Noches de habitación' : 'Ocupación (%)'}}]}}}));
+				}
+				draw('historyChart', data.history, 'room_nights', 'Demanda histórica', false);
+				draw('forecastChart', data.history, 'room_nights', 'Demanda histórica y prevista', true);
+				draw('occupancyChart', data.history, 'occupancy_percent', 'Ocupación por ubicación', false);
+			});
+		}, function(response){
+			if (thisRequest !== requestId) return;
+			$scope.loading = false;
+			$scope.error = (response.data && response.data.error) || 'No se pudo cargar la previsión';
+		});
+	};
+	$scope.$on('$destroy', function(){ $scope.charts.forEach(function(chart){chart.destroy();}); });
+	if ($rootScope.userType === 'manager') $scope.load();
+})
+
 
 .controller('paymentController', function($rootScope, $scope, paymentFactory){
 
@@ -749,6 +810,10 @@ angular.module('FancyHotelApp', ['ngRoute', 'ngResource', 'resourceModule'])
 	.when('/revenueReport', {
 		templateUrl: 'static/views/revenueReport.html',
 		controller: 'reportController'
+	})
+	.when('/forecast', {
+		templateUrl: 'static/views/forecast.html',
+		controller: 'forecastController'
 	})
 	.when('/provideFeedback', {
 		templateUrl: 'static/views/writeReview.html',
